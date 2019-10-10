@@ -40,7 +40,7 @@ public class Game implements MouseListener, ActionListener {
 	boolean checkMeL25 = false;
 	boolean checkMeL26 = false;
 	boolean checkMeL27 = false;
-	JButton balloonButton;
+	JButton baloonButton;
 	JButton sparklesButton;
 	JButton backpackButton;
 	JButton diamondButton;
@@ -88,29 +88,42 @@ public class Game implements MouseListener, ActionListener {
 	}
 
 	void createLevelOneButtons() {
-		try {
-			addButton("balloon.png", 698, 336);
-		} catch (Exception ex) {
-			System.out.println(ex);
-		}
+//			try {
+//			Image balloon = ImageIO.read(getClass().getResource("balloon.png"));
+			baloonButton = addButton("balloon.png", 698, 336);//new JButton(new ImageIcon(balloon));
+//			panel.setLayout(null);
+//			panel.add(baloonButton);
+//			baloonButton.addMouseListener(this);
+//			baloonButton.setBorder(null);
+//			baloonButton.setBounds(698, 336, 30, 30);
+//		} catch (Exception ex) {
+//			System.out.println(ex);
+//		}
+//			
 		
 		try {
-			addButton("diamond.png", 315, 900);
+			Image diamond = ImageIO.read(getClass().getResource("diamond.png"));
+			diamondButton = new JButton(new ImageIcon(diamond));
+			panel.setLayout(null);
+			panel.add(diamondButton);
+			diamondButton.addMouseListener(this);
+			diamondButton.setBorder(null);
+			diamondButton.setBounds(315, 900, 30, 30);
 
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
-		try {
-			Image pawprints = ImageIO.read(getClass().getResource("pawprints.png"));
-			pawprintsButton = new JButton(new ImageIcon(pawprints));
-			panel.setLayout(null);
-			panel.add(pawprintsButton);
-			pawprintsButton.addMouseListener(this);
-			pawprintsButton.setBorder(null);
-			pawprintsButton.setBounds(1079, 782, 30, 30);
-		} catch (Exception ex) {
-			System.out.println(ex);
-		}
+//		try {
+//			Image pawprints = ImageIO.read(getClass().getResource("pawprints.png"));
+			pawprintsButton = addButton("pawprints.png", 1079, 782);//new JButton(new ImageIcon(pawprints));
+//			panel.setLayout(null);
+//			panel.add(pawprintsButton);
+//			pawprintsButton.addMouseListener(this);
+//			pawprintsButton.setBorder(null);
+//			pawprintsButton.setBounds(1079, 782, 30, 30);
+//		} catch (Exception ex) {
+//			System.out.println(ex);
+//		}
 		try {
 			Image ring = ImageIO.read(getClass().getResource("WeddingRing.png"));
 			ringButton = new JButton(new ImageIcon(ring));
@@ -157,17 +170,36 @@ public class Game implements MouseListener, ActionListener {
 		}
 	}
 
-	private void addButton(String fileName, int xPosition, int yPosition) throws IOException {
-		Image balloon = ImageIO.read(getClass().getResource(fileName));
-		balloonButton = new JButton(new ImageIcon(balloon));
-		panel.setLayout(null);
-		panel.add(balloonButton);
-		balloonButton.addMouseListener(this);
-		balloonButton.setBorder(null);
-		balloonButton.setBounds(xPosition, yPosition, 30, 30);
+	private JButton addButton(String filename, int xPosition, int yPosition) {
+		JButton button = new JButton();
+		try {
+			Image picture = ImageIO.read(getClass().getResource(filename));
+			//baloonButton = new JButton(new ImageIcon(picture));
+			ImageIcon imageIcon = new ImageIcon();
+			imageIcon.setImage(picture);
+			button.setIcon(imageIcon);
+			panel.setLayout(null);
+			panel.add(button);
+			button.addMouseListener(this);
+			button.setBorder(null);
+			button.setBounds(xPosition, yPosition, 30, 30);
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+		return button;
 	}
 
-	void levelTwoButtons() {
+//	private void addButton(String fileName, int xPosition, int yPosition) throws IOException {
+//		Image balloon = ImageIO.read(getClass().getResource(fileName));
+//		baloonButton = new JButton(new ImageIcon(balloon));
+//		panel.setLayout(null);
+//		panel.add(baloonButton);
+//		baloonButton.addMouseListener(this);
+//		baloonButton.setBorder(null);
+//		baloonButton.setBounds(xPosition, yPosition, 30, 30);
+//	}
+
+	void createLevelTwoButtons() {
 
 		try {
 			Image apple = ImageIO.read(getClass().getResource("apple.png"));
@@ -309,8 +341,8 @@ public class Game implements MouseListener, ActionListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == (balloonButton)) {
-			balloonButton.setVisible(false);
+		if (e.getSource() == (baloonButton)) {
+			baloonButton.setVisible(false);
 			bar.foundBalloon();
 			checkMe = true;
 		}
@@ -358,7 +390,7 @@ public class Game implements MouseListener, ActionListener {
 			checkMe5 = false;
 			checkMe6 = false;
 			checkMe7 = false;
-			levelTwoButtons();
+			createLevelTwoButtons();
 			time = 0;
 			timer.restart();
 
@@ -400,12 +432,16 @@ public class Game implements MouseListener, ActionListener {
 			checkMeL27 = true;
 		}
 		
-		if (checkMeL2 == true && checkMeL22 == true && checkMeL23 == true && checkMeL24 == true && checkMeL25 == true
-				&& checkMeL26 == true && checkMeL27 == true) {
+		if (checkFoundAllComplete()) {
 			timer.stop();
 			JOptionPane.showMessageDialog(null, "Congratulations! You found all the pictures! \n You finished the puzzle in: " + time + " seconds.");
 			System.exit(0);
 		}
+	}
+
+	private boolean checkFoundAllComplete() {
+		return checkMeL2 == true && checkMeL22 == true && checkMeL23 == true && checkMeL24 == true && checkMeL25 == true
+				&& checkMeL26 == true && checkMeL27 == true;
 	}
 
 	private boolean checkFoundAll() {
